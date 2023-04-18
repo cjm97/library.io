@@ -4,6 +4,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { Box, Grid, Typography } from "@mui/material";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
+import ResponsiveAppBar from "../components/ResponsiveAppBar";
+import { useState, useEffect } from "react";
 
 const categories = [
   "Library",
@@ -14,100 +16,44 @@ const categories = [
   "Read",
 ];
 
+
 export default function LoggedIn() {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    fetch("https://www.googleapis.com/books/v1/volumes?q=search-terms&key=AIzaSyASHvozwZgNePwB5bRx519MbgHV7VLMaZ4")
+      .then((response) => response.json())
+      .then((data) => {
+        setBooks(data);
+      });
+  }, []);
+  console.log(books);
   return (
-    <Box
-      sx={{ display: "flex", justifyContent: "space-between", height: "100vh" }}
-    >
-      <Grid
-        container
+    <>
+      <ResponsiveAppBar />
+      <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          ml: "24px",
+          justifyContent: "space-between"
         }}
       >
-        {categories.map((category) => {
-          if (category === "Library") {
-            return (
-              <Grid item key={category}>
-                <Link to="/" className="home__link--item">
-                  <Typography variant="h5">
-                    Library{"   "}
-                    <img
-                      src="/public/images/Free-Icons-Pack/svg/Free Icons-23.svg"
-                      alt=""
-                      className="logo"
-                    />
-                  </Typography>
-                </Link>
-              </Grid>
-            );
-          } else if (category === "Shelves") {
-            return (
-              <Grid item key={category}>
-                <Typography variant="h5">{category}</Typography>
-              </Grid>
-            );
-          } else if (category === "To Read") {
-            return (
-              <Grid item key={category} sx={{ ml: "12px" }}>
-                <Link to="/toread" className="home__link--item">
-                  <Typography variant="h5">{category}</Typography>
-                </Link>
-              </Grid>
-            );
-          } else {
-            return (
-              <Grid item key={category} sx={{ ml: "12px" }}>
-                <Link
-                  to={`/${category.toLowerCase()}`}
-                  className="home__link--item"
-                >
-                  <Typography variant="h5">{category}</Typography>
-                </Link>
-              </Grid>
-            );
-          }
-        })}
-      </Grid>
-      <Grid
-        item
-        container
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-          alignItems: "flex-end",
-          mt: "24px",
-          mr: "24px",
-        }}
-      >
-        <SearchBar />
-      </Grid>
-    </Box>
+        <Grid
+          item
+          container
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            alignItems: "flex-end",
+            mt: "24px",
+            mr: "24px",
+          }}
+        >
+          <SearchBar />
+        </Grid>
+      </Box>
+    </>
   );
 }
 
-{
-  /* <Grid item>
-          <Typography variant="h4">
-            <Link to="/">
-            Library
-            </Link>
-            </Typography>
-        </Grid>
-        
-        <Grid item sx={{ ml: "8px" }}>
-          <Typography variant="h6">Friends</Typography>
-        </Grid>
-        <Grid item sx={{ ml: "8px", mt: "8px" }}>
-          <Typography variant="h6">Shelves</Typography>
-        </Grid>
-        {categories.map((category) => (
-          <Grid item key={category} sx={{ ml: "12px" }}>
-            <Typography variant="h6">{category}</Typography>
-          </Grid>
-        ))} */
-}
+
