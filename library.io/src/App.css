@@ -1,6 +1,38 @@
 * {
-  font-family: "Roboto", sans-serif;
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* main */
+
+.hero__image--dark {
+  filter: invert(99%) sepia(35%) saturate(118%) hue-rotate(212deg)
+    brightness(115%) contrast(100%);
+    width: 200px;
+}
+
+.hero__signup {
+  text-decoration: none;
+  color:#121212;
+}
+
+/* loggedin */
+
+.home__link--item{
+  text-decoration: none;
+}
+.home__link--item:visited{
+  color: inherit;
+}
+
+.logo {
+  filter: invert(99%) sepia(35%) saturate(118%) hue-rotate(212deg)
+    brightness(115%) contrast(100%);
+    width: 3rem;
 }
