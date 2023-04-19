@@ -18,21 +18,6 @@ const categories = [
 ];
 
 export default function LoggedIn() {
-  const [books, setBooks] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(
-        "https://www.googleapis.com/books/v1/volumes?q=game-of-thrones&key=AIzaSyASHvozwZgNePwB5bRx519MbgHV7VLMaZ4"
-      );
-      const booksData = response.data.items;
-      setBooks(booksData);
-      console.log(booksData);
-    };
-    fetchData();
-  }, []);
-
-  console.log(books);
   return (
     <>
       <ResponsiveAppBar />
