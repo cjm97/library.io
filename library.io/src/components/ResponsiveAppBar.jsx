@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { Grid } from "@mui/material";
 
 const pages = ["Friends", "Reading", "To Read", "Read"];
 
@@ -30,11 +31,13 @@ function ResponsiveAppBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <img
-            src="/public/images/Free-Icons-Pack/svg/Free Icons-23.svg"
-            alt=""
-            className="logo"
-          />
+          <Grid item sx={{ display: { xs: "none", md: "flex" } }}>
+            <img
+              src="/public/images/Free-Icons-Pack/svg/Free Icons-23.svg"
+              alt=""
+              className="logo"
+            />
+          </Grid>
           <Typography
             variant="h6"
             noWrap
@@ -52,7 +55,6 @@ function ResponsiveAppBar() {
           >
             Library
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -89,7 +91,13 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <Grid item sx={{ display: { xs: "flex", md: "none" } }}>
+            <img
+              src="/public/images/Free-Icons-Pack/svg/Free Icons-23.svg"
+              alt=""
+              className="logo"
+            />
+          </Grid>{" "}
           <Typography
             variant="h5"
             noWrap
@@ -106,7 +114,7 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            Library
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => {

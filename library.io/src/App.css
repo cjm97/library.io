@@ -36,3 +36,12 @@ html {
     brightness(115%) contrast(100%);
     width: 3rem;
 }
+
+.home__book {
+  width: 15rem;
+  padding:16px;
+}
+
+.search__book {
+  width: 10rem;
+}

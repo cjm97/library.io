@@ -1,11 +1,12 @@
 import React from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddIcon from "@mui/icons-material/Add";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 import SearchBar from "../components/SearchBar";
 import { Link } from "react-router-dom";
 import ResponsiveAppBar from "../components/ResponsiveAppBar";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const categories = [
   "Library",
@@ -16,17 +17,21 @@ const categories = [
   "Read",
 ];
 
-
 export default function LoggedIn() {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    fetch("https://www.googleapis.com/books/v1/volumes?q=search-terms&key=AIzaSyASHvozwZgNePwB5bRx519MbgHV7VLMaZ4")
-      .then((response) => response.json())
-      .then((data) => {
-        setBooks(data);
-      });
+    const fetchData = async () => {
+      const response = await axios.get(
+        "https://www.googleapis.com/books/v1/volumes?q=game-of-thrones&key=AIzaSyASHvozwZgNePwB5bRx519MbgHV7VLMaZ4"
+      );
+      const booksData = response.data.items;
+      setBooks(booksData);
+      console.log(booksData);
+    };
+    fetchData();
   }, []);
+
   console.log(books);
   return (
     <>
@@ -34,7 +39,7 @@ export default function LoggedIn() {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between"
+          justifyContent: "space-between",
         }}
       >
         <Grid
@@ -52,8 +57,35 @@ export default function LoggedIn() {
           <SearchBar />
         </Grid>
       </Box>
+      <Box>
+        {/* if search bar empty render below */}
+        <Grid
+          item
+          container
+          sx={{ display: "flex", justifyContent: "space-around", mt: "2rem" }}
+          spacing={4}
+        >
+          {categories.slice(3).map((category) => (
+            <Grid
+              item
+              key={category}
+              xs={12}
+              sm={6}
+              md={4}
+              sx={{ textAlign: "center", alignItems: "center" }}
+            >
+              <Paper>
+                <Typography variant="h6">{category}</Typography>
+                <img src="/images/GOT.jpg" alt="" className="home__book" />
+                <Typography sx={{ textAlign: "left", ml: "1rem" }}>
+                  Book description
+                </Typography>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+        {/* else render search contents */}
+      </Box>
     </>
   );
 }
-
-
