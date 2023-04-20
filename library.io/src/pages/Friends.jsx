@@ -1,10 +1,10 @@
 import React from 'react'
 import ResponsiveAppBar from '../components/ResponsiveAppBar'
 
-export default function Read() {
+export default function Friends() {
   return (
     <div>
-      <ResponsiveAppBar />
+        <ResponsiveAppBar />
     </div>
   )
 }

@@ -6,7 +6,7 @@ import ToRead from "./pages/ToRead";
 import Read from "./pages/Read";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
-import LoggedIn from "./pages/LoggedIn";
+import Explore from "./pages/Explore";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -16,6 +16,7 @@ import { ThemeProvider } from "@emotion/react";
 import { darkTheme } from "./themes/darkTheme";
 import { lightTheme } from "./themes/lightTheme";
 import { CssBaseline } from "@mui/material";
+import Friends from "./pages/friends";
 
 function App() {
   return (
@@ -45,7 +46,8 @@ function App() {
           <Route path="/read" element={<Read />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
           <Route path="/signin" element={<SignIn />}></Route>
-          <Route path="/loggedin" element={<LoggedIn />}></Route>
+          <Route path="/explore" element={<Explore />}></Route>
+          <Route path="/friends" element={<Friends />}></Route>
         </Routes>
       </div>
     </ThemeProvider>

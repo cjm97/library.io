@@ -1,7 +1,10 @@
-import React from 'react'
+import React from 'react';
+import ResponsiveAppBar from '../components/ResponsiveAppBar';
 
 export default function ToRead() {
   return (
-    <div>ToRead</div>
-  )
+    <div>
+      <ResponsiveAppBar />
+    </div>
+  );
 }

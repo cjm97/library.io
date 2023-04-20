@@ -22,7 +22,7 @@ html {
   color:#121212;
 }
 
-/* loggedin */
+/* loggedin/explore */
 
 .home__link--item{
   text-decoration: none;
@@ -37,11 +37,13 @@ html {
     width: 3rem;
 }
 
-.home__book {
+/* not in use? */
+.home__book { 
   width: 15rem;
   padding:16px;
 }
 
-.search__book {
-  width: 10rem;
+.book__card--title {
+  font-size: 1rem;
 }
+
