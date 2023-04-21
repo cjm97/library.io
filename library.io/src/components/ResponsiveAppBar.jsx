@@ -8,24 +8,34 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Grid } from '@mui/material';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import Brightness5OutlinedIcon from '@mui/icons-material/Brightness5Outlined';
 
-const pages = ['Explore', 'Friends', 'Reading', 'To Read', 'Read'];
+const pages = ['Explore', 'Friends', 'Shelves'];
+const settings = ['Profile', 'Account', 'Logout'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const [darkMode, setDarkMode] = useState(true);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
   };
 
   const handleDarkModeChange = () => {
@@ -38,7 +48,7 @@ function ResponsiveAppBar() {
         <Toolbar disableGutters>
           <Grid item sx={{ display: { xs: 'none', md: 'flex' } }}>
             <img
-              src='/public/images/Free-Icons-Pack/svg/Free Icons-23.svg'
+              src='public/images/Free-Icons-Pack/svg/Free Icons-23.svg'
               alt='library-logo'
               className='logo'
             />
@@ -89,28 +99,16 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => {
-                if (page === 'To Read') {
-                  return (
-                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                      <a className='home__link--item' href='/toread'>
-                        <Typography textAlign='center'>{page}</Typography>
-                      </a>
-                    </MenuItem>
-                  );
-                } else {
-                  return (
-                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                      <a
-                        className='home__link--item'
-                        href={`/${page.toLowerCase()}`}
-                      >
-                        <Typography textAlign='center'>{page}</Typography>
-                      </a>
-                    </MenuItem>
-                  );
-                }
-              })}
+              {pages.map((page) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <a
+                    className='home__link--item'
+                    href={`/${page.toLowerCase()}`}
+                  >
+                    <Typography textAlign='center'>{page}</Typography>
+                  </a>
+                </MenuItem>
+              ))}
             </Menu>
           </Box>
           <Grid item sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -139,34 +137,48 @@ function ResponsiveAppBar() {
             Library
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => {
-              if (page === 'To Read') {
-                return (
-                  <Button
-                    key={page}
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                    href='/toread'
-                  >
-                    {page}
-                  </Button>
-                );
-              } else {
-                return (
-                  <Button
-                    key={page}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                    href={`/${page.toLowerCase()}`}
-                  >
-                    {page}
-                  </Button>
-                );
-              }
-            })}
+            {pages.map((page) => (
+              <Button
+                key={page}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+                href={`/${page.toLowerCase()}`}
+              >
+                {page}
+              </Button>
+            ))}
           </Box>
           <Button onClick={handleDarkModeChange}>
             {darkMode ? <DarkModeOutlinedIcon /> : <Brightness5OutlinedIcon />}
           </Button>
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title='Open settings'>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt='Chris Marsh' src='' />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id='menu-appbar'
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign='center'>{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>

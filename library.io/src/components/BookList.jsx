@@ -180,7 +180,9 @@ export default function BookList() {
               }}
             >
               <Typography variant="h6" mb={4} >Begin searching for Books</Typography>
-              <img src='/public/images/hero-image-reading.svg' alt='' />
+              
+              <img src='/public/images/hero-image-reading.svg' alt='' className="home__book" />
+              
             </Grid>
           )}
 

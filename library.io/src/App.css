@@ -38,12 +38,19 @@ html {
 }
 
 /* not in use? */
-.home__book { 
-  width: 15rem;
-  padding:16px;
+
+.home__book{
+  width: 100%;
+  height: auto;
+  max-width: 40vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 
 .book__card--title {
   font-size: 1rem;
 }
 
+/* shelves */
