@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,14 +15,18 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { darkTheme } from '../themes/darkTheme';
-import Home from './Home';
-
+import axios from 'axios';
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography
+      variant='body2'
+      color='text.secondary'
+      align='center'
+      {...props}
+    >
       {'Copyright © '}
-      <Link to="/" color="inherit" >
+      <Link to='/' color='inherit'>
         Library.io
       </Link>{' '}
       {new Date().getFullYear()}
@@ -32,18 +38,35 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const newUser = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+    };
+    axios
+      .post('http://localhost:8001/api/users/create', newUser)
+      .then((response) => {
+        console.log(response.data);
+        navigate('/signin');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component='main' maxWidth='xs'>
         <CssBaseline />
         <Box
           sx={{
@@ -56,71 +79,80 @@ export default function SignUp() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component='h1' variant='h5'>
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component='form'
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  autoComplete="given-name"
-                  name="firstName"
+                  autoComplete='given-name'
+                  name='firstName'
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id='firstName'
+                  label='First Name'
                   autoFocus
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
+                  id='lastName'
+                  label='Last Name'
+                  name='lastName'
+                  autoComplete='family-name'
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id='email'
+                  label='Email Address'
+                  name='email'
+                  autoComplete='email'
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  name='password'
+                  label='Password'
+                  type='password'
+                  id='password'
+                  autoComplete='new-password'
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="T&Cs" color="primary" />}
-                  label="I agree to the Terms and Conditions of Library.io"
+                  control={<Checkbox value='T&Cs' color='primary' />}
+                  label='I agree to the Terms and Conditions of Library.io'
                 />
               </Grid>
             </Grid>
             <Button
-              type="submit"
+              type='submit'
               fullWidth
-              variant="contained"
+              variant='contained'
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent='flex-end'>
               <Grid item>
-                <Link to="/signin" variant="body2">
+                <Link to='/signin' variant='body2'>
                   Already have an account? Sign in
                 </Link>
               </Grid>

@@ -18,40 +18,43 @@ import { lightTheme } from './themes/lightTheme';
 import { CssBaseline } from '@mui/material';
 import Friends from './pages/Friends';
 import Shelves from './pages/Shelves';
+import UserProvider from './contexts/userContext';
 
 function App() {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <div className='App'>
-        {/* <nav>
+    <UserProvider>
+      <ThemeProvider theme={darkTheme}>
+        <div className='App'>
+          {/* <nav>
         <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/reading">Reading</Link>
-          </li>
-          <li>
-            <Link to="/toread">To Read</Link>
-          </li>
-          <li>
-            <Link to="/read">Read</Link>
-          </li>
+        <li>
+        <Link to="/">Home</Link>
+        </li>
+        <li>
+        <Link to="/reading">Reading</Link>
+        </li>
+        <li>
+        <Link to="/toread">To Read</Link>
+        </li>
+        <li>
+        <Link to="/read">Read</Link>
+        </li>
         </ul>
       </nav> */}
-        <Routes>
-          <Route path='/' element={<Home />}></Route>
-          <Route path='/reading' element={<Reading />}></Route>
-          <Route path='/toread' element={<ToRead />}></Route>
-          <Route path='/read' element={<Read />}></Route>
-          <Route path='/signup' element={<SignUp />}></Route>
-          <Route path='/signin' element={<SignIn />}></Route>
-          <Route path='/explore' element={<Explore />}></Route>
-          <Route path='/friends' element={<Friends />}></Route>
-          <Route path='/shelves' element={<Shelves />}></Route>
-        </Routes>
-      </div>
-    </ThemeProvider>
+          <Routes>
+            <Route path='/' element={<Home />}></Route>
+            <Route path='/reading' element={<Reading />}></Route>
+            <Route path='/toread' element={<ToRead />}></Route>
+            <Route path='/read' element={<Read />}></Route>
+            <Route path='/signup' element={<SignUp />}></Route>
+            <Route path='/signin' element={<SignIn />}></Route>
+            <Route path='/explore' element={<Explore />}></Route>
+            <Route path='/friends' element={<Friends />}></Route>
+            <Route path='/shelves' element={<Shelves />}></Route>
+          </Routes>
+        </div>
+      </ThemeProvider>
+    </UserProvider>
   );
 }
 
