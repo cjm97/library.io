@@ -138,6 +138,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value='T&Cs' color='primary' />}
+                  required
                   label='I agree to the Terms and Conditions of Library.io'
                 />
               </Grid>

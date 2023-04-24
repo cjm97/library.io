@@ -70,12 +70,6 @@ const loginUser = async (req, res) => {
 
     // if they do exist, make sure their password matches - need to check encrypted version of password
     if (user && (await bcrypt.compare(password, user.password))) {
-      // Create token for use based on their id and email
-      // const token = jwt.sign({ user_id: user.id, email }, process.env.JWT_KEY, {
-      //   expiresIn: '2h',
-      // });
-
-      // send back logged in user details including token
       res.status(200).json({
         result: 'User successfully logged in',
         data: user,

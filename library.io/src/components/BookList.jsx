@@ -151,6 +151,7 @@ export default function BookList() {
                             aria-label={listName[index]}
                             className={`${listName[index]}-button`}
                             title={`Add to your "${listName[index]}" list`}
+                            // if book is added to any list, show some sort of UI that shows it has been added to a list already
                           >
                             {item}
                           </IconButton>

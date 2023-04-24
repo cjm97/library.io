@@ -25,22 +25,6 @@ function App() {
     <UserProvider>
       <ThemeProvider theme={darkTheme}>
         <div className='App'>
-          {/* <nav>
-        <ul>
-        <li>
-        <Link to="/">Home</Link>
-        </li>
-        <li>
-        <Link to="/reading">Reading</Link>
-        </li>
-        <li>
-        <Link to="/toread">To Read</Link>
-        </li>
-        <li>
-        <Link to="/read">Read</Link>
-        </li>
-        </ul>
-      </nav> */}
           <Routes>
             <Route path='/' element={<Home />}></Route>
             <Route path='/reading' element={<Reading />}></Route>
