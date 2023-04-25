@@ -13,6 +13,8 @@ import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import InfoIcon from '@mui/icons-material/Info';
 import TextField from '@mui/material/TextField';
 import _ from 'lodash';
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 const listIcons = [
   <DoneIcon />,
@@ -27,19 +29,20 @@ export default function BookList() {
   const [filterText, setFilterText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const key = 'AIzaSyASHvozwZgNePwB5bRx519MbgHV7VLMaZ4'
-      const response = await axios.get(
-        `https://www.googleapis.com/books/v1/volumes?q=${filterText}&startIndex=1&maxResults=21&key=${key}`
-      );
+  //commented out so i don't get banned from API, uncomment to test
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const key = 'AIzaSyASHvozwZgNePwB5bRx519MbgHV7VLMaZ4'
+  //     const response = await axios.get(
+  //       `https://www.googleapis.com/books/v1/volumes?q=${filterText}&startIndex=1&maxResults=21&key=${key}`
+  //     );
 
-      const booksData = response.data.items;
-      setBooks(booksData);
-    };
-    const delayedFetchData = _.debounce(fetchData, 100);
-    delayedFetchData();
-  }, [filterText]);
+  //     const booksData = response.data.items;
+  //     setBooks(booksData);
+  //   };
+  //   const delayedFetchData = _.debounce(fetchData, 100);
+  //   delayedFetchData();
+  // }, [filterText]);
 
   const handleFilterTextChange = (e) => {
     setFilterText(e.target.value);
@@ -102,8 +105,10 @@ export default function BookList() {
                 >
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <CardContent sx={{ flex: '1 0 auto' }}>
-                      {console.log(`${book.volumeInfo.title.length} ${book.volumeInfo.title}`) }
-                      <Typography component='div' className="book__card--title">
+                      {console.log(
+                        `${book.volumeInfo.title.length} ${book.volumeInfo.title}`
+                      )}
+                      <Typography component='div' className='book__card--title'>
                         {book.volumeInfo.title}
                       </Typography>
                       <Typography
@@ -180,10 +185,21 @@ export default function BookList() {
                 flexDirection: 'column',
               }}
             >
-              <Typography variant="h6" mb={4} >Begin searching for Books</Typography>
-              
-              <img src='/public/images/hero-image-reading.svg' alt='' className="home__book" />
-              
+              <Typography variant='h6' mb={4}>
+                Begin searching for Books
+              </Typography>
+              <Stack spacing={1}>
+                <Skeleton variant="rectangular" width={210} height={60}>
+                </Skeleton>
+                  <Skeleton variant="text" sx={{fontSize: '1rem'}} />
+                <Skeleton variant="rectangular" width={100} height={150} />
+              </Stack>
+
+              <img
+                src='/public/images/hero-image-reading.svg'
+                alt=''
+                className='home__book'
+              />
             </Grid>
           )}
 

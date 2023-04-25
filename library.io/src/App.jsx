@@ -19,6 +19,7 @@ import { CssBaseline } from '@mui/material';
 import Friends from './pages/Friends';
 import Shelves from './pages/Shelves';
 import UserProvider from './contexts/userContext';
+import User from './pages/User';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path='/explore' element={<Explore />}></Route>
             <Route path='/friends' element={<Friends />}></Route>
             <Route path='/shelves' element={<Shelves />}></Route>
+            <Route path='/user' element={<User />}></Route>
           </Routes>
         </div>
       </ThemeProvider>

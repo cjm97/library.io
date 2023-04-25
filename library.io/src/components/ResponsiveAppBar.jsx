@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,6 +16,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { Grid } from '@mui/material';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import Brightness5OutlinedIcon from '@mui/icons-material/Brightness5Outlined';
+import axios from 'axios';
+import SimpleDialogDemo from './Dialog';
 
 const pages = ['Explore', 'Friends', 'Shelves'];
 const settings = ['Profile', 'Account', 'Logout'];
@@ -23,6 +26,20 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [darkMode, setDarkMode] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const navigate = useNavigate();
+
+  const handleSelectUser = (event) => {
+    axios.get(`http://localhost:8001/api/users/${id}`).then((response) => { //show user info
+      console.log(response.data);
+      //display any errors
+      setErrorMsg(response.data.result);
+
+      //redirect to user page
+      navigate('/user');
+    });
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -40,6 +57,10 @@ function ResponsiveAppBar() {
 
   const handleDarkModeChange = () => {
     setDarkMode(!darkMode);
+  };
+
+  const handleAccountSelect = () => {
+    console.log('hello');
   };
 
   return (
@@ -172,11 +193,13 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign='center'>{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleAccountSelect}>
+                <Typography textAlign='center'>Account</Typography>
+              </MenuItem>
+              <MenuItem>
+                <Typography textAlign='center'>Logout</Typography>
+              </MenuItem>
+              <SimpleDialogDemo />
             </Menu>
           </Box>
         </Toolbar>
