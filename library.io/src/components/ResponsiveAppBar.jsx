@@ -33,7 +33,8 @@ const pages = ['Explore', 'Friends', 'Shelves'];
 
 function SimpleDialog(props) {
   const { user } = useContext(UserContext);
-
+  const currentUserString = localStorage.getItem('currentUser');
+  const currentUser = JSON.parse(currentUserString);
   const { onClose, selectedValue, open } = props;
 
   const handleClose = () => {
@@ -51,11 +52,11 @@ function SimpleDialog(props) {
         <ListItem disableGutters>
           <List>
             <ListItemText
-              primary={`User: ${user.firstName} ${user.lastName}`}
+              primary={`User: ${currentUser.firstName} ${currentUser.lastName}`}
               sx={{ display: 'block' }}
             />
-            <ListItemText secondary={`Email: ${user.email}`} />
-            <ListItemText secondary={`Created at: ${user.createdAt}`} />
+            <ListItemText secondary={`Email: ${currentUser.email}`} />
+            <ListItemText secondary={`Created at: ${currentUser.createdAt}`} />
           </List>
         </ListItem>
       </List>
@@ -103,10 +104,6 @@ function ResponsiveAppBar() {
     setDarkMode(!darkMode);
   };
 
-  const handleAccountSelect = () => {
-    console.log('hello');
-  };
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -114,6 +111,11 @@ function ResponsiveAppBar() {
   const handleClose = (value) => {
     setOpen(false);
     setSelectedValue(value);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser');
+    navigate('/');
   };
 
   return (
@@ -246,7 +248,7 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem onClick={handleAccountSelect}>
+              <MenuItem>
                 <Typography textAlign='center' onClick={handleClickOpen}>
                   Account
                 </Typography>
@@ -257,7 +259,9 @@ function ResponsiveAppBar() {
                 />
               </MenuItem>
               <MenuItem>
-                <Typography textAlign='center'>Logout</Typography>
+                <Typography textAlign='center' onClick={handleLogout}>
+                  Logout
+                </Typography>
               </MenuItem>
             </Menu>
           </Box>

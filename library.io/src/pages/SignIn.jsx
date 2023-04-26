@@ -36,7 +36,6 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
-  let { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -47,13 +46,10 @@ export default function SignIn() {
     event.preventDefault();
     axios
       .post('http://localhost:8001/api/users/logIn', { email, password })
-      .then((response) => {
-        console.log(response.data);
-        console.log(response.data.data);
-        // display any errors
+      .then((response) => {        // display any errors
         setErrorMsg(response.data.result);
         // store new user in context if successful
-        setUser(response.data.data);
+        localStorage.setItem('currentUser', JSON.stringify(response.data.data));
         // redirect to explore page
         navigate('/explore');
       })
