@@ -49,6 +49,7 @@ export default function SignIn() {
       .post('http://localhost:8001/api/users/logIn', { email, password })
       .then((response) => {
         console.log(response.data);
+        console.log(response.data.data);
         // display any errors
         setErrorMsg(response.data.result);
         // store new user in context if successful

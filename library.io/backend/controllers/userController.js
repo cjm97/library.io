@@ -22,6 +22,7 @@ const getUsersById = (req, res) => {
       throw err;
     });
 };
+
 const createUsers = async (data, res) => {
   try {
     // Get user input by destructuring request body

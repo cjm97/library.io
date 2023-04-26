@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,7 +9,6 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,21 +16,66 @@ import { Grid } from '@mui/material';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import Brightness5OutlinedIcon from '@mui/icons-material/Brightness5Outlined';
 import axios from 'axios';
-import SimpleDialogDemo from './Dialog';
+import PropTypes from 'prop-types';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import List from '@mui/material/List';
+import ListItemText from '@mui/material/ListItemText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import PersonIcon from '@mui/icons-material/Person';
+import AddIcon from '@mui/icons-material/Add';
+import { blue } from '@mui/material/colors';
+import Avatar from '@mui/material/Avatar';
+import { UserContext } from '../contexts/userContext';
 
 const pages = ['Explore', 'Friends', 'Shelves'];
-const settings = ['Profile', 'Account', 'Logout'];
+
+function SimpleDialog(props) {
+  const { user } = useContext(UserContext);
+
+  const { onClose, selectedValue, open } = props;
+
+  const handleClose = () => {
+    onClose(selectedValue);
+  };
+
+  const handleListItemClick = (value) => {
+    onClose(value);
+  };
+
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <DialogTitle>Account</DialogTitle>
+      <List sx={{ p: '1rem' }}>
+        <ListItem disableGutters>
+          <List>
+            <ListItemText
+              primary={`User: ${user.firstName} ${user.lastName}`}
+              sx={{ display: 'block' }}
+            />
+            <ListItemText secondary={`Email: ${user.email}`} />
+            <ListItemText secondary={`Created at: ${user.createdAt}`} />
+          </List>
+        </ListItem>
+      </List>
+    </Dialog>
+  );
+}
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [darkMode, setDarkMode] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
+  const [open, setOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('');
 
   const navigate = useNavigate();
 
   const handleSelectUser = (event) => {
-    axios.get(`http://localhost:8001/api/users/${id}`).then((response) => { //show user info
+    axios.get(`http://localhost:8001/api/users/${id}`).then((response) => {
+      //show user info
       console.log(response.data);
       //display any errors
       setErrorMsg(response.data.result);
@@ -61,6 +105,15 @@ function ResponsiveAppBar() {
 
   const handleAccountSelect = () => {
     console.log('hello');
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (value) => {
+    setOpen(false);
+    setSelectedValue(value);
   };
 
   return (
@@ -174,7 +227,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Chris Marsh' src='' />
+                <Avatar alt='User' src='' />
               </IconButton>
             </Tooltip>
             <Menu
@@ -194,12 +247,18 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               <MenuItem onClick={handleAccountSelect}>
-                <Typography textAlign='center'>Account</Typography>
+                <Typography textAlign='center' onClick={handleClickOpen}>
+                  Account
+                </Typography>
+                <SimpleDialog
+                  selectedValue={selectedValue}
+                  open={open}
+                  onClose={handleClose}
+                />
               </MenuItem>
               <MenuItem>
                 <Typography textAlign='center'>Logout</Typography>
               </MenuItem>
-              <SimpleDialogDemo />
             </Menu>
           </Box>
         </Toolbar>

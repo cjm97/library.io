@@ -7,7 +7,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  // console.log(req.params.id);
+  console.log(res.body);
+  console.log(req.params.id);
   Controllers.userController.getUsersById(req, res);
 });
 
