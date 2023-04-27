@@ -12,7 +12,6 @@ import DoneIcon from '@mui/icons-material/Done';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import InfoIcon from '@mui/icons-material/Info';
 import TextField from '@mui/material/TextField';
-import _ from 'lodash';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import SkeletonBook from './SkeletonBook';
@@ -29,25 +28,41 @@ export default function BookList() {
   const [books, setBooks] = useState([]);
   const [filterText, setFilterText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   // commented out so i don't get banned from API, uncomment to test
-  
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const key = 'AIzaSyASHvozwZgNePwB5bRx519MbgHV7VLMaZ4';
-  //     const response = await axios.get(
-  //       `https://www.googleapis.com/books/v1/volumes?q=${filterText}&startIndex=1&maxResults=21&key=${key}`
-  //     );
 
-  //     const booksData = response.data.items;
-  //     setBooks(booksData);
-  //   };
-  //   const delayedFetchData = _.debounce(fetchData, 100);
-  //   delayedFetchData();
-  // }, [filterText]);
+  useEffect(() => {
+    let booksTimeoutId;
+    const fetchData = async () => {
+      //define fetch data function
+      const key = 'AIzaSyASHvozwZgNePwB5bRx519MbgHV7VLMaZ4';
+      const response = await axios.get(
+        `https://www.googleapis.com/books/v1/volumes?q=${filterText}&startIndex=1&maxResults=21&key=${key}`
+      );
+
+      const booksData = response.data.items;
+      setBooks(booksData);
+    };
+    const delayedFetchData = () => {
+      clearTimeout(booksTimeoutId);
+      booksTimeoutId = setTimeout(() => {
+        fetchData();
+        setIsLoading(false);
+      }, 1000); //call fetch data function with 1000ms delay
+    };
+    delayedFetchData();
+    return () => {
+      clearTimeout(booksTimeoutId);
+      // search completed
+    };
+  }, [filterText, isLoading]);
 
   const handleFilterTextChange = (e) => {
     setFilterText(e.target.value);
+    setIsLoading(true);
+    setIsSearching(true);
   };
 
   return (
@@ -78,7 +93,7 @@ export default function BookList() {
           >
             {books.length === 0 && (
               <Typography variant='h6' mb={4} sx={{ display: 'inline' }}>
-                Begin searching for Books
+                Begin searching for books
               </Typography>
             )}
 
@@ -100,11 +115,14 @@ export default function BookList() {
             display: 'flex',
             justifyContent: 'space-around',
             mt: '2rem',
+            mb: '2rem',
           }}
           spacing={2}
         >
           {/* books rendered here */}
-          {books.length > 0 ? (
+          {isLoading ? (
+            <SkeletonBook />
+          ) : books.length > 0 ? ( //if search result populates books, render book cards
             books.map((book) => (
               <Grid item key={book.id} xs={12} sm={6} md={4}>
                 <Card
@@ -116,9 +134,6 @@ export default function BookList() {
                 >
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <CardContent sx={{ flex: '1 0 auto' }}>
-                      {console.log(
-                        `${book.volumeInfo.title.length} ${book.volumeInfo.title}`
-                      )}
                       <Typography component='div' className='book__card--title'>
                         {book.volumeInfo.title}
                       </Typography>
@@ -152,7 +167,7 @@ export default function BookList() {
                       }}
                     >
                       {listIcons.map((item, index) =>
-                        item === <InfoIcon /> ? (
+                        item.displayName === 'InfoIcon' ? (
                           <IconButton
                             key={listName[index]}
                             aria-label={listName[index]}
@@ -186,23 +201,24 @@ export default function BookList() {
               </Grid>
             ))
           ) : (
-            <Grid
-              item
-              container
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-              }}
-            >
-              <SkeletonBook />
-              <img
-                src='/public/images/hero-image-reading.svg'
-                alt=''
-                className='home__book'
-              />
-            </Grid>
+            !isSearching && (
+              <Grid
+                item
+                container
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                }}
+              >
+                <img
+                  src='/public/images/hero-image-reading.svg'
+                  alt=''
+                  className='home__book'
+                />
+              </Grid>
+            )
           )}
 
           {/* books rendered above */}

@@ -20,7 +20,7 @@ export default function SkeletonBook() {
         spacing={2}
       >
         {items.map((item) => (
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item key={item} xs={12} sm={6} md={4}>
             <Card
               sx={{
                 display: 'flex',
@@ -39,16 +39,18 @@ export default function SkeletonBook() {
                   }}
                 >
                   <Box sx={{ width: '10rem' }}>
-                    <Skeleton variant='text' /> <Skeleton variant='text' />
+                    <Skeleton variant='text' height={'2rem'} />
+                    <Skeleton variant='text' />
                     <Skeleton variant='text' />
                   </Box>
                   <Box
                     sx={{
                       display: 'flex',
-                      justifyContent: 'center',
+                      justifyContent: 'space-around',
                       alignContent: 'space-between',
                     }}
                   >
+                    <Skeleton variant='circular' width={20} height={20} />
                     <Skeleton variant='circular' width={20} height={20} />
                     <Skeleton variant='circular' width={20} height={20} />
                     <Skeleton variant='circular' width={20} height={20} />

@@ -19,9 +19,9 @@ import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 
 let shelves = ['Reading', 'To Read', 'Read'];
 let descriptions = [
-  'Currently Reading Shelf',
-  'Planned Reads ',
-  'Finished Pile ',
+  'Books you\'re currently reading',
+  'Books you want to read',
+  'Books you\'ve finished',
 ];
 let icons = [
   <AutoStoriesRoundedIcon />,
