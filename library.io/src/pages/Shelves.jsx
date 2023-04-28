@@ -18,6 +18,7 @@ import LibraryBooksRoundedIcon from '@mui/icons-material/LibraryBooksRounded';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 
 let shelves = ['Reading', 'To Read', 'Read'];
+
 let descriptions = [
   'Books you\'re currently reading',
   'Books you want to read',
@@ -45,7 +46,7 @@ export default function Shelves() {
             <Grid key={shelf} item sx={{ width: '80%' }} xs={12} sm={6} md={3}>
               <Card>
                 <CardActionArea
-                  href={`/${shelf}`}
+                  href={shelf === 'To Read' ? `/toread` : `${shelf}`}
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',

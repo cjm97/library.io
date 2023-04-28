@@ -23,6 +23,17 @@ const getReadingBookById = (req, res) => {
     });
 };
 
+const getUsersReadingBooks = (req, res) => {
+  // get specific user's books that match with their id requested
+  Models.ReadingBooks.findAll({ where: { user_id: req.params.id } })
+    .then(function (data) {
+      res.send({ result: 200, data: data });
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+
 const createReadingBook = (req, res) => {
   Models.ReadingBooks.create(req)
     .then(function (data) {
@@ -55,6 +66,7 @@ const deleteReadingBook = (req, res) => {
 
 module.exports = {
   getReadingBooks,
+  getUsersReadingBooks,
   getReadingBookById,
   createReadingBook,
   updateReadingBook,

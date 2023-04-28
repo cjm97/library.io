@@ -14,6 +14,9 @@ router.post('/create', (req, res) => {
   Controllers.booksController.createBook(req.body, res);
 });
 
+router.post('/createSearchBook', (req, res) => { //add search books
+  Controllers.booksController.addSearchBooks(req.body, res);
+});
 
 router.put('/:id', (req, res) => {
   Controllers.booksController.updateBook(req, res);

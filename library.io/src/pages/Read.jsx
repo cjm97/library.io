@@ -1,10 +1,8 @@
 import React from 'react'
-import ResponsiveAppBar from '../components/ResponsiveAppBar'
-
+import Shelf
+ from '../components/Shelf'
 export default function Read() {
   return (
-    <div>
-      <ResponsiveAppBar />
-    </div>
+    <Shelf shelf='read' />
   )
 }

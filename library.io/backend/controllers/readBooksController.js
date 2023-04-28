@@ -4,6 +4,7 @@ const Models = require('../models');
 const { Op } = require('sequelize');
 
 const getReadBooks = (res) => {
+  // for all users?
   Models.ReadBooks.findAll({})
     .then(function (data) {
       res.send({ result: 200, data: data });
@@ -13,7 +14,18 @@ const getReadBooks = (res) => {
     });
 };
 
-const getReadBookById = (req, res) => {
+const getUsersReadBooks = (req, res) => {
+  // get specific user's books that match with their id requested
+  Models.ReadBooks.findAll({ where: { user_id: req.params.id } })
+    .then(function (data) {
+      res.send({ result: 200, data: data });
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+
+const getReadBookById = (req, res) => { //gets book by id
   Models.Books.findAll({ where: { id: req.params.id } })
     .then(function (data) {
       res.send({ result: 200, data: data });
@@ -55,6 +67,7 @@ const deleteReadBook = (req, res) => {
 
 module.exports = {
   getReadBooks,
+  getUsersReadBooks,
   getReadBookById,
   createReadBook,
   updateReadBook,

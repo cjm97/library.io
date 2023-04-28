@@ -1,11 +1,11 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
-import { Box, Grid, Paper, Typography, Button } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import DoneIcon from '@mui/icons-material/Done';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
@@ -13,6 +13,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
 import SkeletonBook from './SkeletonBook';
+import { UserContext } from '../contexts/userContext';
 
 const listIcons = [
   { icon: <DoneIcon />, name: 'Read' },
@@ -30,6 +31,9 @@ export default function BookList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const { user } = useContext(UserContext);
+  const currentUserString = localStorage.getItem('currentUser');
+  const currentUser = JSON.parse(currentUserString);
 
   // commented out so i don't get banned from API, uncomment to test
 
@@ -41,14 +45,24 @@ export default function BookList() {
       const response = await axios.get(
         `https://www.googleapis.com/books/v1/volumes?q=${filterText}&startIndex=1&maxResults=21&key=${key}`
       );
-
       const booksData = response.data.items;
       console.log(booksData);
-      setBooks(booksData);
+      setBooks(booksData); // used to render books
+      // call backend function sending through booksdata [array containing each book with api details]
+
+      //sends bookData to populate my database with books
+      await axios
+        .post('http://localhost:8001/api/books/createSearchBook', booksData)
+        .then((response) => {
+          console.log('success, book added to sql database');
+        })
+        .catch((error) => {
+          console.log("failure, couldn't add search books to database");
+        });
 
       // create a book obj that matches my data
       // ? setBooks to match that data, adjust code beneath to match
-      // find or create those books in my database 
+      // find or create those books in my database
     };
     const delayedFetchData = () => {
       clearTimeout(booksTimeoutId);
@@ -71,9 +85,34 @@ export default function BookList() {
   };
 
   // functions to add book to correct database
-  const handleAddReadBook = () => {};
-  const handleAddToReadBook = () => {};
-  const handleAddFinsihedBook = () => {};
+  const handleViewInfo = (book) => {};
+  const handleAddToShelf = (book, shelf) => {
+    let data = {
+      user_id: currentUser.id,
+      book_id: book.id,
+    };
+
+    const endpoints = {
+      Read: 'read',
+      'To Read': 'toread',
+      Reading: 'reading',
+    };
+
+    const endpoint = endpoints[shelf];
+
+    if (!endpoint) {
+      throw new Error(`Invalid shelf "${shelf}"`);
+    } else {
+      try {
+        axios.post(`http://localhost:8001/api/${endpoint}/create`, data);
+      } catch (error) {
+        console.error(error);
+        throw new Error(`Failed to add book to ${shelf} shelf`);
+      }
+    }
+  };
+
+  const handleAddToCustomShelf = (book) => {};
 
   return (
     <>
@@ -183,6 +222,7 @@ export default function BookList() {
                             aria-label={item.name}
                             className={`${item.name}-button`}
                             title={`Click for more info`}
+                            onClick={() => handleViewInfo(book)}
                           >
                             {item.icon}
                           </IconButton>
@@ -192,6 +232,7 @@ export default function BookList() {
                             aria-label={item.name}
                             className={`${item.name}-button`}
                             title={`Add to custom list`}
+                            onClick={() => handleAddToCustomShelf(book)}
                           >
                             {item.icon}
                           </IconButton>
@@ -201,6 +242,7 @@ export default function BookList() {
                             aria-label={item.name}
                             className={`${item.name}-button`}
                             title={`Add to your "${item.name}" list`}
+                            onClick={() => handleAddToShelf(book, item.name)}
                             // if book is added to any list, show some sort of UI that shows it has been added to a list already
                             // button will post information to logged in user's database shelf
                           >

@@ -1,11 +1,8 @@
 import React from 'react'
-import BookList from '../components/BookList'
-import ResponsiveAppBar from '../components/ResponsiveAppBar'
-
-export default function Reading() {
+import Shelf
+ from '../components/Shelf'
+export default function Read() {
   return (
-    <>
-    <ResponsiveAppBar />
-    </>
+    <Shelf shelf='reading' />
   )
 }
