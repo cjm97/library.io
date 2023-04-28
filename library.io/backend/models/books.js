@@ -1,5 +1,5 @@
-const { DataTypes, Model } = require("sequelize");
-let dbConnect = require("../dbConnect");
+const { DataTypes, Model } = require('sequelize');
+let dbConnect = require('../dbConnect');
 
 const sequelizeInstance = dbConnect.Sequelize;
 
@@ -15,7 +15,7 @@ Books.init(
       primaryKey: true,
     },
     book_name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
       required: true,
     },
@@ -52,7 +52,7 @@ Books.init(
   },
   {
     sequelize: sequelizeInstance,
-    modelName: "books", //use lowercase plural format
+    modelName: 'books', //use lowercase plural format
     timestamps: true,
     freezeTableName: true,
   }
