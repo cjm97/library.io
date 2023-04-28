@@ -9,9 +9,9 @@ class Books extends Model {}
 Books.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
-      autoIncrement: true,
+      required: true,
       primaryKey: true,
     },
     book_name: {
@@ -28,7 +28,6 @@ Books.init(
       type: DataTypes.STRING,
       allowNull: false,
       required: false,
-      unique: true,
     },
     book_publisher: {
       type: DataTypes.STRING,
@@ -36,7 +35,7 @@ Books.init(
       required: false,
     },
     book_pages: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false,
       required: false,
     },

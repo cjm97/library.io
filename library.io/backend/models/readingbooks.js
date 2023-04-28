@@ -1,7 +1,7 @@
 const { DataTypes, Model } = require('sequelize');
 let dbConnect = require('../dbConnect');
 const User = require('./users');
-const Book = require('./book');
+const Books = require('./books');
 
 const sequelizeInstance = dbConnect.Sequelize;
 
@@ -26,11 +26,11 @@ ReadingBooks.init(
       },
     },
     book_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       required: true,
       references: {
-        model: BookList,
+        model: Books,
         key: 'id',
       },
     },

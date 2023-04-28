@@ -14,7 +14,16 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 let userRoutes = require('./routes/userRoutes');
+let bookRoutes = require('./routes/bookRoutes');
+let readBooksRoutes = require('./routes/readBooksRoutes');
+let readingBooksRoutes = require('./routes/readingBooksRoutes');
+let toReadBooksRoutes = require('./routes/toReadBooksRoutes');
+
 app.use('/api/users', userRoutes);
+app.use('/api/books', bookRoutes); // /api/books [get /:id, post /create, put /:id, delete /:id]
+app.use('/api/read', readBooksRoutes); // /api/read/ [get /:id, post /create, put /:id, delete /:id ]
+app.use('/api/reading', readingBooksRoutes);
+app.use('/api/toread', toReadBooksRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to my MYSQL application.' });

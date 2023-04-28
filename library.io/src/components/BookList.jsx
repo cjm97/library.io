@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import ResponsiveAppBar from './ResponsiveAppBar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -11,18 +10,19 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import DoneIcon from '@mui/icons-material/Done';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import InfoIcon from '@mui/icons-material/Info';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
 import SkeletonBook from './SkeletonBook';
 
 const listIcons = [
-  <DoneIcon />,
-  <BookmarkBorderIcon />,
-  <ImportContactsIcon />,
-  <InfoIcon />,
+  { icon: <DoneIcon />, name: 'Read' },
+  { icon: <BookmarkBorderIcon />, name: 'To Read' },
+  { icon: <ImportContactsIcon />, name: 'Reading' },
+  { icon: <InfoIcon />, name: 'Info' },
+  { icon: <AddCircleIcon />, name: 'Custom List' },
 ];
-const listName = ['Read', 'To Read', 'Reading', 'Info'];
+
+const listName = ['Read', 'To Read', 'Reading', 'Info', 'Custom List'];
 
 export default function BookList() {
   const [books, setBooks] = useState([]);
@@ -43,14 +43,19 @@ export default function BookList() {
       );
 
       const booksData = response.data.items;
+      console.log(booksData);
       setBooks(booksData);
+
+      // create a book obj that matches my data
+      // ? setBooks to match that data, adjust code beneath to match
+      // find or create those books in my database 
     };
     const delayedFetchData = () => {
       clearTimeout(booksTimeoutId);
       booksTimeoutId = setTimeout(() => {
         fetchData();
         setIsLoading(false);
-      }, 1000); //call fetch data function with 1000ms delay
+      }, 500); //call fetch data function with 1000ms delay
     };
     delayedFetchData();
     return () => {
@@ -64,6 +69,11 @@ export default function BookList() {
     setIsLoading(true);
     setIsSearching(true);
   };
+
+  // functions to add book to correct database
+  const handleAddReadBook = () => {};
+  const handleAddToReadBook = () => {};
+  const handleAddFinsihedBook = () => {};
 
   return (
     <>
@@ -166,25 +176,35 @@ export default function BookList() {
                         pb: 1,
                       }}
                     >
-                      {listIcons.map((item, index) =>
-                        item.displayName === 'InfoIcon' ? (
+                      {listIcons.map((item) =>
+                        item.name === 'Info' ? (
                           <IconButton
-                            key={listName[index]}
-                            aria-label={listName[index]}
-                            className={`${listName[index]}-button`}
+                            key={item.name}
+                            aria-label={item.name}
+                            className={`${item.name}-button`}
                             title={`Click for more info`}
                           >
-                            {item}
+                            {item.icon}
+                          </IconButton>
+                        ) : item.name === 'Custom List' ? (
+                          <IconButton
+                            key={item.name}
+                            aria-label={item.name}
+                            className={`${item.name}-button`}
+                            title={`Add to custom list`}
+                          >
+                            {item.icon}
                           </IconButton>
                         ) : (
                           <IconButton
-                            key={listName[index]}
-                            aria-label={listName[index]}
-                            className={`${listName[index]}-button`}
-                            title={`Add to your "${listName[index]}" list`}
+                            key={item.name}
+                            aria-label={item.name}
+                            className={`${item.name}-button`}
+                            title={`Add to your "${item.name}" list`}
                             // if book is added to any list, show some sort of UI that shows it has been added to a list already
+                            // button will post information to logged in user's database shelf
                           >
-                            {item}
+                            {item.icon}
                           </IconButton>
                         )
                       )}

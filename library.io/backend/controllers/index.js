@@ -1,3 +1,7 @@
 module.exports = {
-  userController: require("./userController"),
+  userController: require('./userController'),
+  booksController: require('./booksController'),
+  readBooksController: require('./readBooksController'),
+  readingBooksController: require('./readingBooksController'),
+  toReadBooksController: require('./toReadBooksController'),
 };
