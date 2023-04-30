@@ -86,7 +86,8 @@ export default function BookList() {
 
   // functions to add book to correct database
   const handleViewInfo = (book) => {};
-  const handleAddToShelf = (book, shelf) => {
+
+  const handleAddToShelf = async (book, shelf) => {
     let data = {
       user_id: currentUser.id,
       book_id: book.id,
@@ -104,7 +105,20 @@ export default function BookList() {
       throw new Error(`Invalid shelf "${shelf}"`);
     } else {
       try {
-        axios.post(`http://localhost:8001/api/${endpoint}/create`, data);
+        const response = await axios.get(
+          `http://localhost:8001/api/${endpoint}/${currentUser.id}`
+        ); //checks shelf
+        const userShelfData = response.data.data;
+        const targetBookId = book.id;
+        console.log(userShelfData);
+        if (userShelfData.some((obj) => obj.book_id === targetBookId)) {
+          console.log("Book already exists in user's shelf");
+        } else {
+          await axios.post(
+            `http://localhost:8001/api/${endpoint}/create`,
+            data
+          ); //adds book to particular shelf
+        } //check shelf data if book has been added
       } catch (error) {
         console.error(error);
         throw new Error(`Failed to add book to ${shelf} shelf`);

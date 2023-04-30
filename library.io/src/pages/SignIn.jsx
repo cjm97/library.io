@@ -46,7 +46,8 @@ export default function SignIn() {
     event.preventDefault();
     axios
       .post('http://localhost:8001/api/users/logIn', { email, password })
-      .then((response) => {        // display any errors
+      .then((response) => {
+        // display any errors
         setErrorMsg(response.data.result);
         // store new user in context if successful
         localStorage.setItem('currentUser', JSON.stringify(response.data.data));
@@ -55,7 +56,7 @@ export default function SignIn() {
       })
       .catch((error) => {
         console.log(error);
-        setErrorMsg(error.message);
+        setErrorMsg(`${error.response.data.result}`);
       });
   };
 
