@@ -14,7 +14,7 @@ router.post('/create', (req, res) => {
   Controllers.booksController.createBook(req.body, res);
 });
 
-router.post('/createSearchBook', (req, res) => { //add search books
+router.post('/addSearchBooks', (req, res) => { //add search books
   Controllers.booksController.addSearchBooks(req.body, res);
 });
 

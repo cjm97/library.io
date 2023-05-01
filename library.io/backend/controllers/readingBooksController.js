@@ -55,7 +55,9 @@ const updateReadingBook = (req, res) => {
 };
 
 const deleteReadingBook = (req, res) => {
-  Models.ReadingBooks.destroy({ where: { id: req.params.id } })
+  Models.ReadingBooks.destroy({
+    where: { user_id: req.params.user_id, book_id: req.params.book_id },
+  })
     .then(function (data) {
       res.send({ result: 200, data: data });
     })

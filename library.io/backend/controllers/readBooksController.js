@@ -25,7 +25,8 @@ const getUsersReadBooks = (req, res) => {
     });
 };
 
-const getReadBookById = (req, res) => { //gets book by id
+const getReadBookById = (req, res) => {
+  //gets book by id
   Models.Books.findAll({ where: { id: req.params.id } })
     .then(function (data) {
       res.send({ result: 200, data: data });
@@ -56,7 +57,9 @@ const updateReadBook = (req, res) => {
 };
 
 const deleteReadBook = (req, res) => {
-  Models.ReadBooks.destroy({ where: { id: req.params.id } })
+  Models.ReadBooks.destroy({
+    where: { user_id: req.params.user_id, book_id: req.params.book_id },
+  })
     .then(function (data) {
       res.send({ result: 200, data: data });
     })

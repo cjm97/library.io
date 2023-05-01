@@ -23,14 +23,13 @@ const listIcons = [
   { icon: <AddCircleIcon />, name: 'Custom List' },
 ];
 
-const listName = ['Read', 'To Read', 'Reading', 'Info', 'Custom List'];
-
 export default function BookList() {
   const [books, setBooks] = useState([]);
   const [filterText, setFilterText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [addedToShelf, setAddedToShelf] = useState({});
   const { user } = useContext(UserContext);
   const currentUserString = localStorage.getItem('currentUser');
   const currentUser = JSON.parse(currentUserString);
@@ -52,7 +51,7 @@ export default function BookList() {
 
       //sends bookData to populate my database with books
       await axios
-        .post('http://localhost:8001/api/books/createSearchBook', booksData)
+        .post('http://localhost:8001/api/books/addSearchBooks', booksData)
         .then((response) => {
           console.log('success, book added to sql database');
         })
@@ -64,6 +63,7 @@ export default function BookList() {
       // ? setBooks to match that data, adjust code beneath to match
       // find or create those books in my database
     };
+
     const delayedFetchData = () => {
       clearTimeout(booksTimeoutId);
       booksTimeoutId = setTimeout(() => {
@@ -122,6 +122,34 @@ export default function BookList() {
       } catch (error) {
         console.error(error);
         throw new Error(`Failed to add book to ${shelf} shelf`);
+      }
+    }
+  };
+
+  const handleAddCheck = async (book, shelf) => {
+    const endpoints = {
+      Read: 'read',
+      'To Read': 'toread',
+      Reading: 'reading',
+    };
+
+    const endpoint = endpoints[shelf];
+
+    if (!endpoint) {
+      throw new Error(`Invalid shelf "${shelf}"`);
+    } else {
+      try {
+        const response = await axios.get(
+          `http://localhost:8001/api/${endpoint}/${currentUser.id}`
+        );
+        const userShelfData = response.data.data;
+        const targetBookId = book.id;
+        return userShelfData.some((obj) => obj.book_id === targetBookId);
+      } catch (error) {
+        console.error(error);
+        throw new Error(
+          `Failed to check if book has been added to ${shelf} shelf`
+        );
       }
     }
   };
@@ -257,8 +285,11 @@ export default function BookList() {
                             className={`${item.name}-button`}
                             title={`Add to your "${item.name}" list`}
                             onClick={() => handleAddToShelf(book, item.name)}
-                            // if book is added to any list, show some sort of UI that shows it has been added to a list already
-                            // button will post information to logged in user's database shelf
+                            color={
+                              handleAddCheck(book, item.name)
+                                ? 'success'
+                                : undefined
+                            }
                           >
                             {item.icon}
                           </IconButton>

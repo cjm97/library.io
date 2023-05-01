@@ -41,7 +41,7 @@ export default function Shelves() {
           alignItems: 'center',
         }}
       >
-        <Grid item container mt={'15%'} spacing={2}>
+        <Grid item container mt={'20%'} spacing={2}>
           {shelves.map((shelf, index) => (
             <Grid key={shelf} item sx={{ width: '80%' }} xs={12} sm={6} md={3}>
               <Card>

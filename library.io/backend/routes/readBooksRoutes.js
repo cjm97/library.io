@@ -28,7 +28,7 @@ router.put('/:id', (req, res) => {
   Controllers.readBooksController.updateReadBook(req, res);
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:user_id/books/:book_id', (req, res) => {
   // delete a book in the 'read' pile
   Controllers.readBooksController.deleteReadBook(req, res);
 });

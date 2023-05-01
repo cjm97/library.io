@@ -195,7 +195,7 @@ function ResponsiveAppBar() {
             />
           </Grid>{' '}
           <Typography
-            variant='h5'
+            variant='h6'
             noWrap
             component='a'
             href='/explore'

@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import ResponsiveAppBar from '../components/ResponsiveAppBar';
 import { UserContext } from '../contexts/userContext';
-import { Container, Grid, Box, Typography } from '@mui/material';
+import { Container, Grid, Box, Typography, IconButton } from '@mui/material';
 import axios from 'axios';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import InfoIcon from '@mui/icons-material/Info';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function Shelf({ shelf }) {
   const { user } = useContext(UserContext);
@@ -32,6 +34,13 @@ export default function Shelf({ shelf }) {
     };
     fetchData();
   }, []);
+
+  const handleRemoveBook = async (book) => {
+    const deleteUserBook = await axios.delete(
+      `http://localhost:8001/api/${shelf}/${currentUser.id}/books/${book.id}`
+    );
+    setBooks((prevBooks) => prevBooks.filter((b) => b.id !== book.id));
+  };
 
   return (
     <>
@@ -78,6 +87,29 @@ export default function Shelf({ shelf }) {
                         {book.book_subtitle}
                       </Typography>
                     </CardContent>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        pl: 1,
+                        pb: 1,
+                      }}
+                    >
+                      <IconButton
+                        aria-label='info-button'
+                        title='Book Info'
+                        onClick={() => handleViewInfo(book)}
+                      >
+                        <InfoIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label='delete-button'
+                        title='Delete Book from Shelf'
+                        onClick={() => handleRemoveBook(book)}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </Box>
                     <Box
                       sx={{
                         display: 'flex',
