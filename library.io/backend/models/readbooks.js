@@ -34,6 +34,20 @@ ReadBooks.init(
         key: 'id',
       },
     },
+    user_rating: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      required: false,
+      validate: {
+        min: 0,
+        max: 5,
+      },
+    },
+    user_review: {
+      type: DataTypes.STRING(10000),
+      allowNull: true,
+      required: false,
+    },
   },
   {
     sequelize: sequelizeInstance,

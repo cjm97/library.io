@@ -23,8 +23,13 @@ router.get('/:id', (req, res) => {
   Controllers.readBooksController.getUsersReadBooks(req, res);
 });
 
-router.put('/:id', (req, res) => {
-  // update a book in the 'read' pile
+router.get('/:user_id/books/:book_id', (req, res) => {
+
+  Controllers.readBooksController.getUsersReadBook(req, res);
+});
+
+router.put('/:user_id/books/:book_id', (req, res) => {
+
   Controllers.readBooksController.updateReadBook(req, res);
 });
 

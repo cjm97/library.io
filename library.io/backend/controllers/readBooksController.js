@@ -46,8 +46,22 @@ const createReadBook = (req, res) => {
     });
 };
 
+const getUsersReadBook = (req, res) => {
+  Models.ReadBooks.findAll({
+    where: { user_id: req.params.user_id, book_id: req.params.book_id },
+  })
+    .then(function (data) {
+      res.send({ result: 200, data: data });
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+
 const updateReadBook = (req, res) => {
-  Models.ReadBooks.update(req.body, { where: { id: req.params.id } })
+  Models.ReadBooks.update(req.body, {
+    where: { user_id: req.params.user_id, book_id: req.params.book_id },
+  })
     .then(function (data) {
       res.send({ result: 200, data: data });
     })
@@ -71,6 +85,7 @@ const deleteReadBook = (req, res) => {
 module.exports = {
   getReadBooks,
   getUsersReadBooks,
+  getUsersReadBook,
   getReadBookById,
   createReadBook,
   updateReadBook,

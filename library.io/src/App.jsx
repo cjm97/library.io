@@ -15,6 +15,7 @@ import * as React from 'react';
 import { ThemeProvider } from '@emotion/react';
 import { darkTheme } from './themes/darkTheme';
 import { lightTheme } from './themes/lightTheme';
+import { useState } from 'react';
 import { CssBaseline } from '@mui/material';
 import Friends from './pages/Friends';
 import Shelves from './pages/Shelves';
@@ -22,6 +23,7 @@ import UserProvider from './contexts/userContext';
 import User from './pages/User';
 
 function App() {
+
   return (
     <UserProvider>
       <ThemeProvider theme={darkTheme}>

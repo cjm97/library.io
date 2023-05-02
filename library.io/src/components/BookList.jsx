@@ -14,27 +14,50 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
 import SkeletonBook from './SkeletonBook';
 import { UserContext } from '../contexts/userContext';
-
-const listIcons = [
-  { icon: <DoneIcon />, name: 'Read' },
-  { icon: <BookmarkBorderIcon />, name: 'To Read' },
-  { icon: <ImportContactsIcon />, name: 'Reading' },
-  { icon: <InfoIcon />, name: 'Info' },
-  { icon: <AddCircleIcon />, name: 'Custom List' },
-];
+import BookInfoDialog from './BookInfoDialog';
 
 export default function BookList() {
   const [books, setBooks] = useState([]);
+  const [readBooks, setReadBooks] = useState([]);
+  const [readingBooks, setReadingBooks] = useState([]);
+  const [toReadBooks, setToReadBooks] = useState([]);
   const [filterText, setFilterText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [addedToShelf, setAddedToShelf] = useState({});
+  const [open, setOpen] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
   const { user } = useContext(UserContext);
   const currentUserString = localStorage.getItem('currentUser');
   const currentUser = JSON.parse(currentUserString);
 
   // commented out so i don't get banned from API, uncomment to test
+  const listIcons = [
+    { icon: <DoneIcon />, name: 'Read', state: readBooks },
+    { icon: <BookmarkBorderIcon />, name: 'To Read', state: toReadBooks },
+    { icon: <ImportContactsIcon />, name: 'Reading', state: readingBooks },
+    { icon: <InfoIcon />, name: 'Info' },
+    { icon: <AddCircleIcon />, name: 'Custom List' },
+  ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const readResponse = await axios.get(`http://localhost:8001/api/read/2`);
+      const readData = readResponse.data.data;
+      setReadBooks(readData);
+      const readingResponse = await axios.get(
+        `http://localhost:8001/api/reading/2`
+      );
+      const readingData = readingResponse.data.data;
+      setReadingBooks(readingData);
+      const toReadResponse = await axios.get(
+        `http://localhost:8001/api/toread/2`
+      );
+      const toReadData = toReadResponse.data.data;
+      setToReadBooks(toReadData);
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     let booksTimeoutId;
@@ -126,35 +149,15 @@ export default function BookList() {
     }
   };
 
-  const handleAddCheck = async (book, shelf) => {
-    const endpoints = {
-      Read: 'read',
-      'To Read': 'toread',
-      Reading: 'reading',
-    };
+  const handleAddToCustomShelf = (book) => {};
 
-    const endpoint = endpoints[shelf];
-
-    if (!endpoint) {
-      throw new Error(`Invalid shelf "${shelf}"`);
-    } else {
-      try {
-        const response = await axios.get(
-          `http://localhost:8001/api/${endpoint}/${currentUser.id}`
-        );
-        const userShelfData = response.data.data;
-        const targetBookId = book.id;
-        return userShelfData.some((obj) => obj.book_id === targetBookId);
-      } catch (error) {
-        console.error(error);
-        throw new Error(
-          `Failed to check if book has been added to ${shelf} shelf`
-        );
-      }
-    }
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  const handleAddToCustomShelf = (book) => {};
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <>
@@ -259,15 +262,25 @@ export default function BookList() {
                     >
                       {listIcons.map((item) =>
                         item.name === 'Info' ? (
-                          <IconButton
-                            key={item.name}
-                            aria-label={item.name}
-                            className={`${item.name}-button`}
-                            title={`Click for more info`}
-                            onClick={() => handleViewInfo(book)}
-                          >
-                            {item.icon}
-                          </IconButton>
+                          <>
+                            <IconButton
+                              key={item.name}
+                              aria-label={item.name}
+                              className={`${item.name}-button`}
+                              title={`Click for more info`}
+                              onClick={() => {
+                                setSelectedBook(book);
+                                handleClickOpen();
+                              }}
+                            >
+                              {item.icon}
+                            </IconButton>
+                            <BookInfoDialog
+                              open={open}
+                              handleClose={handleClose}
+                              book={selectedBook}
+                            />
+                          </>
                         ) : item.name === 'Custom List' ? (
                           <IconButton
                             key={item.name}
@@ -286,9 +299,10 @@ export default function BookList() {
                             title={`Add to your "${item.name}" list`}
                             onClick={() => handleAddToShelf(book, item.name)}
                             color={
-                              handleAddCheck(book, item.name)
+                              item.state &&
+                              item.state.some((obj) => obj.book_id === book.id)
                                 ? 'success'
-                                : undefined
+                                : 'primary'
                             }
                           >
                             {item.icon}
