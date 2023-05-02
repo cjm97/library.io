@@ -262,7 +262,7 @@ export default function BookList() {
                     >
                       {listIcons.map((item) =>
                         item.name === 'Info' ? (
-                          <>
+                          <div key={item.name}>
                             <IconButton
                               key={item.name}
                               aria-label={item.name}
@@ -276,11 +276,12 @@ export default function BookList() {
                               {item.icon}
                             </IconButton>
                             <BookInfoDialog
+                            key={book.id}
                               open={open}
                               handleClose={handleClose}
                               book={selectedBook}
                             />
-                          </>
+                          </div>
                         ) : item.name === 'Custom List' ? (
                           <IconButton
                             key={item.name}
