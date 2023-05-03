@@ -7,6 +7,7 @@ import Read from './pages/Read';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Explore from './pages/Explore';
+import Community from './pages/Community';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -17,7 +18,7 @@ import { darkTheme } from './themes/darkTheme';
 import { lightTheme } from './themes/lightTheme';
 import { useState } from 'react';
 import { CssBaseline } from '@mui/material';
-import Friends from './pages/Friends';
+import Friends from './pages/Community';
 import Shelves from './pages/Shelves';
 import UserProvider from './contexts/userContext';
 import User from './pages/User';
@@ -36,7 +37,7 @@ function App() {
             <Route path='/signup' element={<SignUp />}></Route>
             <Route path='/signin' element={<SignIn />}></Route>
             <Route path='/explore' element={<Explore />}></Route>
-            <Route path='/friends' element={<Friends />}></Route>
+            <Route path='/community' element={<Community />}></Route>
             <Route path='/shelves' element={<Shelves />}></Route>
             <Route path='/user' element={<User />}></Route>
           </Routes>

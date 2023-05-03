@@ -41,17 +41,20 @@ export default function BookList() {
   ];
 
   useEffect(() => {
+    // useEffect that populates shelfData states with user's lists
     const fetchData = async () => {
-      const readResponse = await axios.get(`http://localhost:8001/api/read/2`);
+      const readResponse = await axios.get(
+        `http://localhost:8001/api/read/${currentUser.id}`
+      );
       const readData = readResponse.data.data;
       setReadBooks(readData);
       const readingResponse = await axios.get(
-        `http://localhost:8001/api/reading/2`
+        `http://localhost:8001/api/reading/${currentUser.id}`
       );
       const readingData = readingResponse.data.data;
       setReadingBooks(readingData);
       const toReadResponse = await axios.get(
-        `http://localhost:8001/api/toread/2`
+        `http://localhost:8001/api/toread/${currentUser.id}`
       );
       const toReadData = toReadResponse.data.data;
       setToReadBooks(toReadData);
@@ -107,9 +110,6 @@ export default function BookList() {
     setIsSearching(true);
   };
 
-  // functions to add book to correct database
-  const handleViewInfo = (book) => {};
-
   const handleAddToShelf = async (book, shelf) => {
     let data = {
       user_id: currentUser.id,
@@ -121,7 +121,8 @@ export default function BookList() {
       'To Read': 'toread',
       Reading: 'reading',
     };
-
+    const button = document.getElementById(`${book.id}-${shelf}`);
+    button.style.color = '#66bb6a'
     const endpoint = endpoints[shelf];
 
     if (!endpoint) {
@@ -276,7 +277,7 @@ export default function BookList() {
                               {item.icon}
                             </IconButton>
                             <BookInfoDialog
-                            key={book.id}
+                              key={book.id}
                               open={open}
                               handleClose={handleClose}
                               book={selectedBook}
@@ -294,6 +295,7 @@ export default function BookList() {
                           </IconButton>
                         ) : (
                           <IconButton
+                            id={`${book.id}-${item.name}`}
                             key={item.name}
                             aria-label={item.name}
                             className={`${item.name}-button`}

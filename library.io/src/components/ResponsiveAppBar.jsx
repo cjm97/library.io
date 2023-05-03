@@ -27,7 +27,7 @@ import Dialog from '@mui/material/Dialog';
 import Avatar from '@mui/material/Avatar';
 import { UserContext } from '../contexts/userContext';
 
-const pages = ['Explore', 'Friends', 'Shelves'];
+const pages = ['Explore', 'Community', 'Shelves'];
 
 function SimpleDialog(props) {
   const { user } = useContext(UserContext);

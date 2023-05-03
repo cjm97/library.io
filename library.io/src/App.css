@@ -54,3 +54,7 @@ html {
 }
 
 /* shelves */
+
+.clicked {
+  color: #66bb6a;
+}

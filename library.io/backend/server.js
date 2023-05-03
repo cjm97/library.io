@@ -20,8 +20,8 @@ let readingBooksRoutes = require('./routes/readingBooksRoutes');
 let toReadBooksRoutes = require('./routes/toReadBooksRoutes');
 
 app.use('/api/users', userRoutes);
-app.use('/api/books', bookRoutes); // /api/books [get /:id, post /create, put /:id, delete /:id]
-app.use('/api/read', readBooksRoutes); // /api/read/ [get /:id, post /create, put /:id, delete /:id ]
+app.use('/api/books', bookRoutes);
+app.use('/api/read', readBooksRoutes); 
 app.use('/api/reading', readingBooksRoutes);
 app.use('/api/toread', toReadBooksRoutes);
 

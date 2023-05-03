@@ -63,7 +63,7 @@ export default function ReviewDialog(props) {
             fullWidth
             variant='standard'
             onChange={handleReviewChange}
-            placeholder={'placeholdertext'}
+            placeholder={'Review goes here'}
           />
           <Stack spacing={1}>
             <Rating
