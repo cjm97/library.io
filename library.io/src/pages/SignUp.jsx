@@ -116,6 +116,7 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
+                  type='email'
                   id='email'
                   label='Email Address'
                   name='email'

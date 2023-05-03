@@ -71,7 +71,6 @@ export default function BookList() {
         `https://www.googleapis.com/books/v1/volumes?q=${filterText}&startIndex=1&maxResults=21&key=${key}`
       );
       const booksData = response.data.items;
-      console.log(booksData);
       setBooks(booksData); // used to render books
       // call backend function sending through booksdata [array containing each book with api details]
 
@@ -134,7 +133,6 @@ export default function BookList() {
         ); //checks shelf
         const userShelfData = response.data.data;
         const targetBookId = book.id;
-        console.log(userShelfData);
         if (userShelfData.some((obj) => obj.book_id === targetBookId)) {
           console.log("Book already exists in user's shelf");
         } else {

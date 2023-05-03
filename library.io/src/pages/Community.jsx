@@ -67,6 +67,7 @@ export default function Community() {
           }}
           spacing={2}
         >
+          <Typography variant='h3' sx={{width:'100%', textAlign:'center'}}>Community Reviews</Typography>
           {readBooks &&
             readBooks.map((book) =>
               book.user_rating ? (

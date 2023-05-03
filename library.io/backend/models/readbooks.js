@@ -35,7 +35,7 @@ ReadBooks.init(
       },
     },
     user_rating: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: true,
       required: false,
       validate: {
