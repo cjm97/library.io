@@ -17,16 +17,16 @@ import { UserContext } from '../contexts/userContext';
 import BookInfoDialog from './BookInfoDialog';
 
 export default function BookList() {
-  const [books, setBooks] = useState([]);
-  const [readBooks, setReadBooks] = useState([]);
+  const [books, setBooks] = useState([]); //initial state for populating books on the DOM from gbooks api
+  const [readBooks, setReadBooks] = useState([]); // this and the bottom three are states used for determing if a book has been added to a list
   const [readingBooks, setReadingBooks] = useState([]);
   const [toReadBooks, setToReadBooks] = useState([]);
-  const [filterText, setFilterText] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [selectedBook, setSelectedBook] = useState(null);
+  const [filterText, setFilterText] = useState(''); //search filter text
+  const [currentPage, setCurrentPage] = useState(1);  // pagination feature in the future
+  const [isLoading, setIsLoading] = useState(false); // used to determine if skeleton should show
+  const [isSearching, setIsSearching] = useState(false); //also used for skeleton 
+  const [open, setOpen] = useState(false); //used for info dialog for books
+  const [selectedBook, setSelectedBook] = useState(null); //sets the book information for the dialog component 
   const { user } = useContext(UserContext);
   const currentUserString = localStorage.getItem('currentUser');
   const currentUser = JSON.parse(currentUserString);
@@ -121,7 +121,7 @@ export default function BookList() {
       Reading: 'reading',
     };
     const button = document.getElementById(`${book.id}-${shelf}`);
-    button.style.color = '#66bb6a'
+    button.style.color = '#66bb6a';
     const endpoint = endpoints[shelf];
 
     if (!endpoint) {
@@ -136,14 +136,23 @@ export default function BookList() {
         if (userShelfData.some((obj) => obj.book_id === targetBookId)) {
           console.log("Book already exists in user's shelf");
         } else {
-          await axios.post(
-            `http://localhost:8001/api/${endpoint}/create`,
-            data
-          ); //adds book to particular shelf
+          try {
+            await axios.post(
+              `http://localhost:8001/api/${endpoint}/create`,
+              data
+            ); //adds book to particular shelf
+          } catch (error) {
+            console.error(error);
+            throw new Error(
+              `failed to add book to ${shelf} shelf ${error.message} `
+            );
+          }
         } //check shelf data if book has been added
       } catch (error) {
         console.error(error);
-        throw new Error(`Failed to add book to ${shelf} shelf`);
+        throw new Error(
+          `Failed to fetch ${shelf} shelf data. ${error.message}`
+        );
       }
     }
   };

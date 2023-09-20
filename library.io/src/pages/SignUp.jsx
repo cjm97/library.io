@@ -42,6 +42,7 @@ export default function SignUp() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const navigate = useNavigate();
 
@@ -61,6 +62,11 @@ export default function SignUp() {
       })
       .catch((error) => {
         console.log(error);
+        setErrorMsg(
+          error.response.data.result === undefined
+            ? `${error.response.data}`
+            : `${error.response.data.result}`
+        );
       });
   };
 
@@ -143,6 +149,9 @@ export default function SignUp() {
                   label='I agree to the Terms and Conditions of Library.io'
                 />
               </Grid>
+              <Typography variant='body2' sx={{ textAlign: 'center' }}>
+                {errorMsg}
+              </Typography>
             </Grid>
             <Button
               type='submit'

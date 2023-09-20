@@ -7,12 +7,6 @@ router.get('/', (req, res) => {
   Controllers.readBooksController.getReadBooks(res);
 });
 
-// router.get('/:id', (req, res) => {
-//   //get specific read book
-//   console.log(res.body);
-//   console.log(req.params.id);
-//   Controllers.readBooksController.getReadBookById(req, res);
-// });
 
 router.post('/create', (req, res) => {
   //create a book in the 'read' pile

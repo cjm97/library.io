@@ -9,7 +9,8 @@ const getUsers = (res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 
@@ -19,7 +20,8 @@ const getUsersById = (req, res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 
@@ -30,14 +32,14 @@ const createUsers = async (data, res) => {
 
     // Validate user input
     if (!(email && password && firstName && lastName)) {
-      res.status(400).json('All input is required');
+      return res.status(400).json('All input is required');
     }
 
     // Validate if user exists in our database
     const oldUser = await Models.Users.findOne({ where: { email } });
 
     if (oldUser) {
-      res.status(409).json({ result: 'User already exists. Please login' });
+      return res.status(409).json({ result: 'User already exists. Please login' });
     }
 
     //Encrypt user password
@@ -53,7 +55,9 @@ const createUsers = async (data, res) => {
     res.status(200).json({ result: 'Success, user created' });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ result: 'ruh roh something went wrong: ' + error.message });
+    res
+      .status(500)
+      .json({ result: 'ruh roh something went wrong: ' + error.message });
   }
 };
 
@@ -63,8 +67,10 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     // Validate user input
-    if (!(email && password)) {
-      res.status(400).json({ result: 'All input is required' });
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ result: 'Please provide email and password' });
     }
     // Validate if user exists in our database
     const user = await Models.Users.findOne({ where: { email: email } });
@@ -76,10 +82,10 @@ const loginUser = async (req, res) => {
         data: user,
         // token: token,
       });
-    } else res.status(400).json({ result: 'Invalid user credentials' });
+    } else return res.status(400).json({ result: 'Invalid email or password' });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ result: err.message });
+    res.status(500).json({ result: 'Server Error' });
   }
 };
 
@@ -89,7 +95,8 @@ const updateUsers = (req, res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 
@@ -99,7 +106,8 @@ const deleteUsers = (req, res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 

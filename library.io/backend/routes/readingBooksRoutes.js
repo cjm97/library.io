@@ -7,11 +7,7 @@ router.get('/', (req, res) => {
   Controllers.readingBooksController.getReadingBooks(res);
 });
 
-// router.get('/:id', (req, res) => { //get specific read book
-//   console.log(res.body);
-//   console.log(req.params.id);
-//   Controllers.readingBooksController.getReadingBookById(req, res);
-// });
+
 
 router.get('/:id', (req, res) => {
   Controllers.readingBooksController.getUsersReadingBooks(req, res);

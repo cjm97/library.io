@@ -9,19 +9,11 @@ const getReadingBooks = (res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 
-const getReadingBookById = (req, res) => {
-  Models.Books.findAll({ where: { id: req.params.id } })
-    .then(function (data) {
-      res.send({ result: 200, data: data });
-    })
-    .catch((err) => {
-      throw err;
-    });
-};
 
 const getUsersReadingBooks = (req, res) => {
   // get specific user's books that match with their id requested
@@ -30,9 +22,11 @@ const getUsersReadingBooks = (req, res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
+
 
 const createReadingBook = (req, res) => {
   Models.ReadingBooks.create(req)
@@ -40,7 +34,8 @@ const createReadingBook = (req, res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 
@@ -50,7 +45,8 @@ const updateReadingBook = (req, res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 
@@ -62,14 +58,15 @@ const deleteReadingBook = (req, res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
+
 
 module.exports = {
   getReadingBooks,
   getUsersReadingBooks,
-  getReadingBookById,
   createReadingBook,
   updateReadingBook,
   deleteReadingBook,

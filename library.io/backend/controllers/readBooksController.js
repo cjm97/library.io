@@ -10,7 +10,8 @@ const getReadBooks = (res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 
@@ -21,20 +22,12 @@ const getUsersReadBooks = (req, res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 
-const getReadBookById = (req, res) => {
-  //gets book by id
-  Models.Books.findAll({ where: { id: req.params.id } })
-    .then(function (data) {
-      res.send({ result: 200, data: data });
-    })
-    .catch((err) => {
-      throw err;
-    });
-};
+
 
 const createReadBook = (req, res) => {
   Models.ReadBooks.create(req)
@@ -42,7 +35,8 @@ const createReadBook = (req, res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 
@@ -54,7 +48,8 @@ const getUsersReadBook = (req, res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 
@@ -66,7 +61,8 @@ const updateReadBook = (req, res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 
@@ -78,7 +74,8 @@ const deleteReadBook = (req, res) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
+      res.send({ result: 500, data: err.message });
     });
 };
 
@@ -86,7 +83,6 @@ module.exports = {
   getReadBooks,
   getUsersReadBooks,
   getUsersReadBook,
-  getReadBookById,
   createReadBook,
   updateReadBook,
   deleteReadBook,
